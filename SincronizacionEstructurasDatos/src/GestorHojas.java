@@ -5,10 +5,20 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class GestorHojas extends Thread {
 
 	private static List<String> lista = new ArrayList<String>();
+	CopyOnWriteArrayList<String> copiaLista = new CopyOnWriteArrayList(lista);
 
 	@Override
 	public void run() {
-		propuestaNumero();
+		for (int i = 0; i < 10; i++) {
+			copiaLista.add(new String("Texto" + i));
+		}
+
+		synchronized (copiaLista){
+			for (String string : copiaLista) {
+				System.out.println(string);
+			}
+		}
+
 	}
 
 	public static void main(String[] args) {
@@ -17,21 +27,4 @@ public class GestorHojas extends Thread {
 		}
 
 	}
-
-	/**
-	 * Introducimos el código que había en el run en un método synchronized para que así los método estén sincronizados
-	 *
-	 */
-	synchronized public static void propuestaNumero(){
-		CopyOnWriteArrayList<String> copiaLista = new CopyOnWriteArrayList(lista);
-		for (int i = 0; i < 10; i++) {
-			copiaLista.add(new String("Texto" + i));
-		}
-
-		for (String string : copiaLista) {
-			System.out.println(string);
-		}
-	}
-
-
-	}
+}
